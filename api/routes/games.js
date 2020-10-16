@@ -1,6 +1,10 @@
 module.exports  = app => {
-  const controller = require('../controllers/games')();
+  const controller = app.controllers.games;
 
-  app.route('/api/v1/games').get(controller.listGames);
+  app.route('/api/v1/games')
+    .get(controller.listGames)
+    .post(controller.saveGames);
 
+  app.route('/api/v1/games/:gameId')
+    .delete(controller.removeGames);
 }

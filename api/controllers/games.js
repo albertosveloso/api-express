@@ -40,8 +40,38 @@ module.exports = app => {
         games: gamesMock,
       });
     }
+  }
 
+  controller.updateGames = (req, res) => {
+    const {
+      gameId,
+    } = req.params;
 
+    const foundGamesIndex = gamesMock.data.findIndex(game => game.id === gameId);
+
+    if(foundGamesIndex === -1){
+      res.status(404).json({
+        message: 'Game não encontrado',
+        success: false,
+        games: gamesMock,
+      });
+    }else {
+      const newGame = {
+        id: gameId,
+        title: req.body.title,
+        year: req.body.year,
+        type: req.body.type,
+        createAt: new Date()
+      };
+
+      gamesMock.data.splice(foundGamesIndex, 1, newGame);
+
+      res.status(200).json({
+        message: 'Game atualizado com sucesso!',
+        success: true,
+        games: gamesMock,
+      });
+    }
   }
 
   return controller;
